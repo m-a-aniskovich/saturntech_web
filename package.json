@@ -1,0 +1,33 @@
+{
+  "name": "saturntech_web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-a-aniskovich/saturntech_web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-csso": "^2.0.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-sourcemaps": "^2.2.0",
+    "gulp-terser": "^2.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/m-a-aniskovich/saturntech_web/issues"
+  },
+  "homepage": "https://github.com/m-a-aniskovich/saturntech_web#readme"
+}
