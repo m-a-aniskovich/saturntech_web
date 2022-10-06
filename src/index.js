@@ -6,7 +6,11 @@ function load3D(container, file) {
 }
 
 function init(container, file) {
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20);
+    const fov = 45;
+    const aspect = window.innerWidth / (window.innerHeight/2);
+    const near = 0.01;
+    const far = 2000;
+    camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
     camera.position.set(-0.75, 0.7, 1.25);
     scene = new THREE.Scene();
     const model = new THREE.GLTFLoader().load(
@@ -23,17 +27,18 @@ function init(container, file) {
     renderer = WebGL.isWebGLAvailable() ? new THREE.WebGLRenderer({antialias: true}) : new THREE.CanvasRenderer();
 
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
+    renderer.setSize(window.innerWidth, window.innerHeight/2);
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 3;
     renderer.outputEncoding = THREE.sRGBEncoding;
+
     container.appendChild(renderer.domElement);
 
     const environment = new THREE.RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
-    scene.background = new THREE.Color(0xbbbbbb);
-    scene.environment = pmremGenerator.fromScene(environment).texture;
+    //scene.background = new THREE.Color(0xbbbbbb);
+    //scene.environment = pmremGenerator.fromScene(environment).texture;
 
     controls = new THREE.ArcballControls (camera, renderer.domElement);
     controls.update();
