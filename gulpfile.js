@@ -16,6 +16,10 @@ const DIST_DIR = "docs";
 
 var paths = {
     js: [
+        "three.js",
+        "GLTFLoader.js",
+        "OrbitControls.js",
+        "RoomEnvironment.js",
         "index.js"
     ],
     copy: [
