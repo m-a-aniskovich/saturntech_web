@@ -21,6 +21,7 @@ var paths = {
         "src/three.js",
         "src/GLTFLoader.js",
         "src/OrbitControls.js",
+        "src/ArcballControls.js",
         "src/RoomEnvironment.js",
         //"src/index.js"
     ],
