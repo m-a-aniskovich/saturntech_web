@@ -1,19 +1,19 @@
-let camera, scene, renderer, controls;
-const container_height = 600, container_width = 1200;
+let container, camera, scene, renderer, controls;
 
-function load3D(container, file) {
-    init(container, file);
+function load3D(element, file, rotation) {
+    container = element;
+    init(file);
     animate();
 }
 
-function init(container, file) {
+function init(file) {
     const fov = 45;
-    const aspect = container_width / container_height;
+    const aspect = container.offsetWidth / container.offsetHeight;
     const near = 0.01;
     const far = 2000;
 
     camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
-    camera.position.set(-0.75, 0.7, 1.25);
+    camera.position.set(0, 0, 4);
 
     scene = new THREE.Scene();
     const model = new THREE.GLTFLoader().load(
@@ -21,19 +21,17 @@ function init(container, file) {
         function (gltf) {
             scene.add(gltf.scene);
         },
-        function (xhr) {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        },
+        undefined,
         console.error
     );
 
     renderer = WebGL.isWebGLAvailable() ? new THREE.WebGLRenderer({antialias: true}) : new THREE.CanvasRenderer();
 
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(container_width, container_height);
-    renderer.toneMapping = THREE.ReinhardToneMapping;
-    renderer.toneMappingExposure = 3;
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    renderer.toneMappingExposure = .4;
 
     container.appendChild(renderer.domElement);
 
@@ -45,26 +43,18 @@ function init(container, file) {
     scene.environment = pmremGenerator.fromScene( environment ).texture;
     environment.dispose();
 
-    const grid = new THREE.GridHelper( 500, 10, 0xffffff, 0xffffff );
-    grid.material.opacity = 0.5;
-    grid.material.depthWrite = false;
-    grid.material.transparent = true;
-    scene.add( grid );
-
-    controls = new THREE.ArcballControls (camera, renderer.domElement);
-    controls.minDistance = 400;
-    controls.maxDistance = 1000;
-    controls.gizmoVisible = true
-    controls.target.set( 10, 90, - 16 );
+    controls = new THREE.OrbitControls (camera, renderer.domElement);
+    controls.enableGizmos = false;
+    controls.target.set(0, 0, 0);
     controls.update();
 
     window.addEventListener('resize', onWindowResize);
 }
 
 function onWindowResize() {
-    camera.aspect = container_width / container_height;
+    camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(container_width, container_height);
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
 
 function animate() {
@@ -74,5 +64,4 @@ function animate() {
 }
 function render() {
     renderer.render(scene, camera);
-    console.log(camera,controls);
 }
