@@ -22,7 +22,7 @@ jobs:
 
       - name: Build
         run: |
-          gulp
+          npm run build
 
       - name: Deploy to GH Page
         uses: JamesIves/github-pages-deploy-action@v4
