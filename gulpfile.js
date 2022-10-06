@@ -20,7 +20,7 @@ var paths = {
         "src/WebGL.js",
         "src/three.js",
         "src/GLTFLoader.js",
-        "src/ArcballControls.js",
+        "src/OrbitControls.js",
         "src/RoomEnvironment.js",
         "src/index.js"
     ],
