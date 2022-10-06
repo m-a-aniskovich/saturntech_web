@@ -1,4 +1,5 @@
 let camera, scene, renderer, controls;
+const container_height = 600, container_width = 1200;
 
 function load3D(container, file) {
     init(container, file);
@@ -7,7 +8,7 @@ function load3D(container, file) {
 
 function init(container, file) {
     const fov = 45;
-    const aspect = window.innerWidth / (window.innerHeight);
+    const aspect = container_width / container_height;
     const near = 0.01;
     const far = 2000;
 
@@ -29,7 +30,7 @@ function init(container, file) {
     renderer = WebGL.isWebGLAvailable() ? new THREE.WebGLRenderer({antialias: true}) : new THREE.CanvasRenderer();
 
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container_width, container_height);
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 3;
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -61,9 +62,9 @@ function init(container, file) {
 }
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = container_width / container_height;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container_width, container_height);
 }
 
 function animate() {
