@@ -22,7 +22,7 @@ var paths = {
         "src/GLTFLoader.js",
         "src/ArcballControls.js",
         "src/RoomEnvironment.js",
-        "src/index.js"
+        //"src/index.js"
     ],
     copy: [
         "assets/*.*"
