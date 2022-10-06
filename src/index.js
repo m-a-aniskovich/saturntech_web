@@ -35,11 +35,7 @@ function init(container, file) {
     scene.background = new THREE.Color(0xbbbbbb);
     scene.environment = pmremGenerator.fromScene(environment).texture;
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.minDistance = 1;
-    controls.maxDistance = 10;
-    controls.target.set(0, 0.35, 0);
+    controls = new THREE.ArcballControls (camera, renderer.domElement);
     controls.update();
 
     window.addEventListener('resize', onWindowResize);
