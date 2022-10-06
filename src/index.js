@@ -36,7 +36,7 @@ function init(container, file) {
 
     container.appendChild(renderer.domElement);
 
-    const environment = new RoomEnvironment();
+    const environment = new THREE.RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
     scene = new THREE.Scene();
@@ -53,6 +53,7 @@ function init(container, file) {
     controls = new THREE.ArcballControls (camera, renderer.domElement);
     controls.minDistance = 400;
     controls.maxDistance = 1000;
+    controls.gizmoVisible = true
     controls.target.set( 10, 90, - 16 );
     controls.update();
 
