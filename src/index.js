@@ -16,7 +16,7 @@ function init(file) {
     camera.position.set(0, 0, 4);
 
     scene = new THREE.Scene();
-    const model = new THREE.GLTFLoader().load(
+    new THREE.GLTFLoader().load(
         file,
         function (gltf) {
             scene.add(gltf.scene);
@@ -67,7 +67,7 @@ function init(file) {
 
     controls = new THREE.OrbitControls (camera, renderer.domElement);
     controls.enableGizmos = false;
-    controls.target.copy(model.position);
+    controls.target.set(0,0,0);
     controls.update();
 
     window.addEventListener('resize', onWindowResize);
