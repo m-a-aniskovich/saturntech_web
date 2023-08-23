@@ -1,9 +1,12 @@
-let container, camera, scene, renderer, controls;
-
-function load3D(element, file, rotation) {
+let container, camera, scene, renderer, controls, model;
+function load3D(element) {
+    if (!element) return false;
     container = element;
-    init(file);
-    animate();
+    const url = container.dataset.model;
+    if (url) {
+        init(url);
+        animate();
+    }
 }
 
 function init(file) {
@@ -19,7 +22,11 @@ function init(file) {
     new THREE.GLTFLoader().load(
         file,
         function (gltf) {
-            scene.add(gltf.scene);
+            model = gltf.scene
+            model.castShadow = true;
+            model.receiveShadow = true;
+            scene.add(model);
+            document.getElementById("threejs_loading").style.display = "none";
         },
         undefined,
         console.error
@@ -31,6 +38,8 @@ function init(file) {
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = .4;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
     const environment = new THREE.RoomEnvironment();
@@ -41,29 +50,12 @@ function init(file) {
     scene.environment = pmremGenerator.fromScene( environment ).texture;
     environment.dispose();
 
-    hlight = new THREE.AmbientLight (0x404040,100);
+    hlight = new THREE.AmbientLight (0x404040, 0.4);
     scene.add(hlight);
     
-    directionalLight = new THREE.DirectionalLight(0xffffff,100);
-    directionalLight.position.set(0,1,0);
+    directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.castShadow = true;
     scene.add(directionalLight);
-    
-    light = new THREE.PointLight(0xc4c4c4,10);
-    light.position.set(0,300,500);
-    scene.add(light);
-    
-    light2 = new THREE.PointLight(0xc4c4c4,10);
-    light2.position.set(500,100,0);
-    scene.add(light2);
-    
-    light3 = new THREE.PointLight(0xc4c4c4,10);
-    light3.position.set(0,100,-500);
-    scene.add(light3);
-    
-    light4 = new THREE.PointLight(0xc4c4c4,10);
-    light4.position.set(-500,300,500);
-    scene.add(light4);
 
     controls = new THREE.OrbitControls (camera, renderer.domElement);
     controls.enableGizmos = false;
@@ -87,3 +79,26 @@ function animate() {
 function render() {
     renderer.render(scene, camera);
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const viewer_div = document.getElementById("threejs");
+    if (viewer_div) {
+        viewer_div.innerHTML =
+            '<div id="threejs_loading">\n' +
+            '  <div class="cube-wrapper">\n' +
+            '    <div class="cube">\n' +
+            '      <div class="cube-faces">\n' +
+            '        <div class="cube-face shadow"></div>\n' +
+            '        <div class="cube-face bottom"></div>\n' +
+            '        <div class="cube-face top"></div>\n' +
+            '        <div class="cube-face left"></div>\n' +
+            '        <div class="cube-face right"></div>\n' +
+            '        <div class="cube-face back"></div>\n' +
+            '        <div class="cube-face front"></div>\n' +
+            '      </div>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '</div>';
+        load3D(viewer_div);
+    }
+}, false);
