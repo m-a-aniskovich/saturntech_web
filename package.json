@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp"
+    "build": "gulp",
+    "dev-build": "cross-env NODE_ENV=development gulp"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.0",
     "gulp-debug": "^4.0.0",
     "gulp-if": "^2.0.2",
