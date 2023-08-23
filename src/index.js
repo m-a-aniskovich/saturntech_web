@@ -22,9 +22,14 @@ function init(file) {
     new THREE.GLTFLoader().load(
         file,
         function (gltf) {
-            model = gltf.scene
-            model.castShadow = true;
-            model.receiveShadow = true;
+            model = gltf.scene;
+            model.traverse( function ( child ) {
+                if (child.isMesh) {
+                    if(child.name == "PCB") child.receiveShadow = true;
+                    else child.castShadow = true;
+                    child.geometry.computeVertexNormals(); // FIX
+                }
+            });
             scene.add(model);
             document.getElementById("threejs_loading").style.display = "none";
         },
@@ -37,7 +42,7 @@ function init(file) {
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = .4;
+    renderer.toneMappingExposure = 0.25;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
@@ -52,9 +57,17 @@ function init(file) {
 
     hlight = new THREE.AmbientLight (0x404040, 0.4);
     scene.add(hlight);
-    
-    directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
     directionalLight.castShadow = true;
+    directionalLight.position.set(0, 3, 2);
+    directionalLight.shadow.camera.top = 2;
+    directionalLight.shadow.camera.bottom = -2;
+    directionalLight.shadow.camera.right = 2;
+    directionalLight.shadow.camera.left = -2;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 10;
+    directionalLight.shadow.mapSize.set(1024, 1024);
     scene.add(directionalLight);
 
     controls = new THREE.OrbitControls (camera, renderer.domElement);
